@@ -31,13 +31,10 @@ public class UserMealsUtil {
         // TODO return filtered list with correctly exceeded field
         Map<LocalDate, Integer> mealMap = new HashMap<>();
         List<UserMealWithExceed> userMealWithExceedList = new ArrayList<>();
-
+        int cal = 0;
         mealList
                 .stream()
-                .map(s -> {
-                    s.
-                    return s;
-                })
+
                 .filter(s -> TimeUtil.isBetween(s.getDateTime().toLocalTime(), startTime, endTime))
                 .forEach(s -> userMealWithExceedList.add(new UserMealWithExceed(s.getDateTime(), s.getDescription(), s.getCalories(), true)));
         return userMealWithExceedList;
