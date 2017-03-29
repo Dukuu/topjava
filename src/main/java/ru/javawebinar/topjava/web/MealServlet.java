@@ -22,4 +22,11 @@ public class MealServlet extends HttpServlet {
         req.setAttribute("mealList", MealsUtil.getExceededMealList(MealsUtil.main(null), 2000));
         req.getRequestDispatcher("meals.jsp").forward(req, resp);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        LOG.debug("crud for meals");
+
+
+    }
 }
