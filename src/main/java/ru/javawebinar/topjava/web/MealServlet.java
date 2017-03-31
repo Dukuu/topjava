@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
+import ru.javawebinar.topjava.dao.MealDao;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletException;
@@ -19,7 +20,8 @@ public class MealServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LOG.debug("forward to meals");
 
-        req.setAttribute("mealList", MealsUtil.getExceededMealList(MealsUtil.main(null), 2000));
+        MealDao mealDao = new MealDao();
+        req.setAttribute("mealList", MealsUtil.getExceededMealList(mealDao.getAllMeals(),2000));
         req.getRequestDispatcher("meals.jsp").forward(req, resp);
     }
 
