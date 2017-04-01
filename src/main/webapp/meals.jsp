@@ -21,11 +21,11 @@
             <td>${meal.dateTime.toLocalTime()}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
-            <td>Update</td>
-            <td>Delete</td>
+            <td><a href="?action=edit&id=<c:out value="${meal.id}"/>">Update</a></td>
+            <td><a href="?action=delete&id=<c:out value="${meal.id}"/>">Delete</a></td>
         </tr>
     </c:forEach>
 </table>
-<a href="/newuser">Add User</a>
+<a href="?action=new">Add Meal</a>
 </body>
 </html>

@@ -6,20 +6,20 @@ import ru.javawebinar.topjava.model.Meal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MealDao implements MealAccess {
 
     @Override
     public void addMeal(Meal meal) {
-        Integer lastKey = ((TreeMap<Integer, Meal>) MealStorage.getMealMapStorage()).lastKey();
-        lastKey++;
+        AtomicInteger lastKey = ((TreeMap<AtomicInteger, Meal>)MealStorage.getMealMapStorage()).lastKey();
+        lastKey.incrementAndGet();
         MealStorage.getMealMapStorage().put(lastKey, new Meal(lastKey, meal.getDateTime(), meal.getDescription(), meal.getCalories()));
     }
 
     @Override
     public void deleteMeal(int mealId) {
         if (MealStorage.getMealMapStorage().containsKey(mealId)) MealStorage.getMealMapStorage().remove(mealId);
-        else throw new NullPointerException("No meal with such ID to delete");
     }
 
     @Override
@@ -27,7 +27,6 @@ public class MealDao implements MealAccess {
         if (MealStorage.getMealMapStorage().containsKey(meal.getId())) {
             MealStorage.getMealMapStorage().put(meal.getId(), new Meal(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories()));
         }
-        else throw new NullPointerException("No meal with such ID to update");
     }
 
     @Override

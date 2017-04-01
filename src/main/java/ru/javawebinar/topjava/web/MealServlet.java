@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -21,7 +22,6 @@ public class MealServlet extends HttpServlet {
     private static final Logger LOG = getLogger(MealServlet.class);
     private MealDao mealDao;
     private static String LIST = "meals.jsp";
-
 
     public MealServlet() {
         super();
@@ -34,8 +34,10 @@ public class MealServlet extends HttpServlet {
 
         String forward = LIST;
         String action = req.getParameter("action");
-
-        if (action.equalsIgnoreCase("delete")) {
+        if (action == null) {
+            req.setAttribute("mealList", MealsUtil.getExceededMealList(mealDao.getAllMeals(),2000));
+        }
+        else if (action.equalsIgnoreCase("delete")) {
             int mealId = Integer.parseInt(req.getParameter("id"));
             mealDao.deleteMeal(mealId);
             req.setAttribute("mealList", MealsUtil.getExceededMealList(mealDao.getAllMeals(),2000));
@@ -44,7 +46,10 @@ public class MealServlet extends HttpServlet {
             forward = "meal.jsp";
             int mealId = Integer.parseInt(req.getParameter("id"));
             Meal meal = mealDao.getMealById(mealId);
-            req.setAttribute("mealEdit", meal);
+            req.setAttribute("meal", meal);
+        }
+        else if (action.equalsIgnoreCase("new")) {
+            forward = "meal.jsp";
         }
         else req.setAttribute("mealList", MealsUtil.getExceededMealList(mealDao.getAllMeals(),2000));
         req.getRequestDispatcher(forward).forward(req, resp);
@@ -60,14 +65,15 @@ public class MealServlet extends HttpServlet {
         Integer cal = Integer.parseInt(req.getParameter("cal"));
 
         if (mealIdString == null || mealIdString.isEmpty()) {
-            Meal meal = new Meal(-1, localDateTime, mealDescr, cal);
+            Meal meal = new Meal(new AtomicInteger(-1), localDateTime, mealDescr, cal);
             mealDao.addMeal(meal);
         }
         else {
-            Integer mealId = Integer.parseInt(mealIdString);
+            AtomicInteger mealId = new AtomicInteger(Integer.parseInt(mealIdString));
             Meal meal = new Meal(mealId, localDateTime, mealDescr, cal);
             mealDao.updateMeal(meal);
         }
+        req.setAttribute("mealList", MealsUtil.getExceededMealList(mealDao.getAllMeals(),2000));
         req.getRequestDispatcher(LIST).forward(req, resp);
     }
 }

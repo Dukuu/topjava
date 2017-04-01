@@ -10,7 +10,6 @@ import java.io.IOException;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-
 /**
  * User: gkislin
  * Date: 19.08.2014
