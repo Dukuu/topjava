@@ -13,6 +13,7 @@
         <td>Time</td>
         <td>Description</td>
         <td>Calories</td>
+        <td colspan="2">Action</td>
     </tr>
     <c:forEach items="${mealList}" var="meal">
         <tr style="color: ${meal.exceed ? "red" : "green"}" id="meal">
@@ -20,8 +21,11 @@
             <td>${meal.dateTime.toLocalTime()}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
+            <td>Update</td>
+            <td>Delete</td>
         </tr>
     </c:forEach>
 </table>
+<a href="/newuser">Add User</a>
 </body>
 </html>
