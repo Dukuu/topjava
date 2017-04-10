@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.model;
 
+import org.springframework.cglib.core.Local;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -63,5 +65,19 @@ public class Meal extends BaseEntity {
                 ", description='" + description + '\'' +
                 ", calories=" + calories +
                 '}';
+    }
+
+    public boolean isWithinDateRange(LocalDate from, LocalDate to) {
+        if (to==null && from==null) return true;
+        if (to==null) return !(getDate().isBefore(from));
+        if (from==null) return !(getDate().isAfter(to));
+        return !(getDate().isBefore(from) || getDate().isAfter(to));
+    }
+
+    public boolean isWithinTimeRange(LocalTime from, LocalTime to) {
+        if (to==null && from==null) return true;
+        if (to==null) return !(getTime().isBefore(from));
+        if (from==null) return !(getTime().isAfter(to));
+        return !(getTime().isBefore(from) || getTime().isAfter(to));
     }
 }

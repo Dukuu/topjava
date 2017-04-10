@@ -15,9 +15,9 @@ public interface MealService {
 
     Meal get(int mealId, int userId) throws NotFoundException;
 
-    void update(Meal meal, int userId);
-
     List<Meal> getAll(int userId);
 
-    List<Meal> sortByDateTime(List<Meal> meals, int userId, LocalDate dateFrom, LocalDate dateTo, LocalTime timeFrom, LocalTime timeTo);
+    List<Meal> sortByDate(List<Meal> meals, LocalDate dateFrom, LocalDate dateTo);
+
+    List<Meal> sortByTime(List<Meal> meals, LocalTime timeFrom, LocalTime timeTo);
 }

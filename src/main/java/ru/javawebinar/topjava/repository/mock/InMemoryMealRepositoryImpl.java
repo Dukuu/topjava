@@ -42,7 +42,7 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
 
     @Override
     public Meal get(int id) {
-        if (repository.get(id).getUserId() != AuthorizedUser.id()) return null;
+        if (repository.get(id).getUserId() != AuthorizedUser.getId()) return null;
         return repository.get(id);
     }
 
@@ -50,7 +50,7 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     public Collection<Meal> getAll() {
         return repository.values()
                 .stream()
-                .sorted(Comparator.comparing(Meal::getTime).reversed())
+                .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());
     }
 }

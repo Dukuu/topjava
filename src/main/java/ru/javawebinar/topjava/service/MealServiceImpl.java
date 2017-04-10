@@ -14,8 +14,12 @@ import java.util.stream.Collectors;
 @Service
 public class MealServiceImpl implements MealService {
 
-    @Autowired
     private MealRepository repository;
+
+    @Autowired
+    public void setRepository(MealRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Meal save(Meal meal) {
@@ -39,12 +43,6 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
-    public void update(Meal meal, int userId) throws NotFoundException {
-        if (meal.getUserId() != userId) throw new NotFoundException("Meal with id=" + meal.getId() + " belongs to another user. Cannot update!");
-        repository.save(meal);
-    }
-
-    @Override
     public List<Meal> getAll(int userId) {
         return repository.getAll()
                 .stream()
@@ -53,7 +51,16 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
-    public List<Meal> sortByDateTime(List<Meal> meals, int userId, LocalDate dateFrom, LocalDate dateTo, LocalTime timeFrom, LocalTime timeTo) {
-        return null;
+    public List<Meal> sortByDate(List<Meal> meals, LocalDate dateFrom, LocalDate dateTo) {
+        return meals.stream()
+                .filter(meal -> meal.isWithinDateRange(dateFrom, dateTo))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Meal> sortByTime(List<Meal> meals, LocalTime timeFrom, LocalTime timeTo) {
+        return meals.stream()
+                .filter(meal -> meal.isWithinTimeRange(timeFrom, timeTo))
+                .collect(Collectors.toList());
     }
 }
