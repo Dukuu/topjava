@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -10,7 +12,7 @@
 </head>
 <body>
 <section>
-    <h3>Meals</h3>
+    <h3><spring:message code="meals.title"/></h3>
     <form method="post" action="meals?action=filter">
         <dl>
             <dt>From Date:</dt>
@@ -36,9 +38,9 @@
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Calories</th>
+            <th><spring:message code="meals.date"/></th>
+            <th><spring:message code="meals.description"/></th>
+            <th><spring:message code="meals.calories"/></th>
             <th></th>
             <th></th>
         </tr>

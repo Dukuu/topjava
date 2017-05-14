@@ -22,13 +22,14 @@
         </tr>
         </thead>
         <c:forEach items="${users}" var="user">
+<%--
             <jsp:useBean id="user" scope="page" type="ru.javawebinar.topjava.model.User"/>
+--%>
             <tr>
                 <td><c:out value="${user.name}"/></td>
                 <td><a href="mailto:${user.email}">${user.email}</a></td>
                 <td>${user.roles}</td>
-                <td><%=user.isEnabled()%>
-                </td>
+                <td>${user.enabled}</td>
                 <td><fmt:formatDate value="${user.registered}" pattern="dd-MMMM-yyyy"/></td>
             </tr>
         </c:forEach>
