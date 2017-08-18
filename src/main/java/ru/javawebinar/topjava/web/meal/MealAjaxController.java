@@ -7,12 +7,16 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealWithExceed;
 
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
+
+import static ru.javawebinar.topjava.util.converter.DateTimeFormatters.*;
 
 @RestController
-@RequestMapping("ajax/user/meals/")
+@RequestMapping("ajax/user/meals")
 public class MealAjaxController extends AbstractMealController {
 
     @Autowired
@@ -44,5 +48,15 @@ public class MealAjaxController extends AbstractMealController {
         else {
             super.update(meal, id);
         }
+    }
+
+    @RequestMapping(value = "/filter", method = {RequestMethod.POST, RequestMethod.GET}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<MealWithExceed> filter(
+            @RequestParam(value = "startDate", required = false) String startDate, @RequestParam(value = "startTime", required = false) String startTime,
+            @RequestParam(value = "endDate", required = false) String endDate, @RequestParam(value = "endTime", required = false) String endTime) throws ParseException {
+        LocalDateFormatter localDateFormatter = new LocalDateFormatter();
+        LocalTimeFormatter localTimeFormatter = new LocalTimeFormatter();
+        Locale locale = Locale.ENGLISH;
+        return super.getBetween(localDateFormatter.parse(startDate, locale), localTimeFormatter.parse(startTime, locale), localDateFormatter.parse(endDate, locale), localTimeFormatter.parse(endTime, locale));
     }
 }

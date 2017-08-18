@@ -8,6 +8,10 @@ function makeEditable() {
         return false;
     });
 
+    $('#filter').click(function () {
+        filter();
+    });
+
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
     });
@@ -23,14 +27,14 @@ function deleteRow(id) {
         url: ajaxUrl + id,
         type: 'DELETE',
         success: function () {
-            updateTable();
+            updateTable(ajaxUrl);
             successNoty('Deleted');
         }
     });
 }
 
-function updateTable() {
-    $.get(ajaxUrl, function (data) {
+function updateTable(url) {
+    $.get(url, function (data) {
         datatableApi.clear();
         $.each(data, function (key, item) {
             datatableApi.row.add(item);
@@ -47,8 +51,21 @@ function save() {
         data: form.serialize(),
         success: function () {
             $('#editRow').modal('hide');
-            updateTable();
+            updateTable(ajaxUrl);
             successNoty('Saved');
+        }
+    });
+}
+
+function filter() {
+    var form = $('#filterform');
+    $.ajax({
+        type: 'POST',
+        url: 'ajax/user/meals/filter/',
+        data: form.serialize(),
+        success: function () {
+            updateTable('ajax/user/meals/filter/');
+            successNoty('Filtered');
         }
     });
 }
