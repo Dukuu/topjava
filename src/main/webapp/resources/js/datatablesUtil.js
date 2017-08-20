@@ -12,6 +12,8 @@ function makeEditable() {
         filter();
     });
 
+    $('#reset').trigger('reset');
+
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
     });
@@ -27,14 +29,15 @@ function deleteRow(id) {
         url: ajaxUrl + id,
         type: 'DELETE',
         success: function () {
-            updateTable(ajaxUrl);
+            if (ajaxUrl == 'ajax/admin/users/') updateTable();
+            else filter();
             successNoty('Deleted');
         }
     });
 }
 
-function updateTable(url) {
-    $.get(url, function (data) {
+function updateTable() {
+    $.get(ajaxUrl, function (data) {
         datatableApi.clear();
         $.each(data, function (key, item) {
             datatableApi.row.add(item);
@@ -51,7 +54,8 @@ function save() {
         data: form.serialize(),
         success: function () {
             $('#editRow').modal('hide');
-            updateTable(ajaxUrl);
+            if (ajaxUrl == 'ajax/admin/users/') updateTable();
+            else filter();
             successNoty('Saved');
         }
     });
@@ -63,9 +67,26 @@ function filter() {
         type: 'POST',
         url: 'ajax/user/meals/filter/',
         data: form.serialize(),
-        success: function () {
-            updateTable('ajax/user/meals/filter/');
+        success: function (data) {
+            datatableApi.clear();
+            $.each(data, function (key, item) {
+                datatableApi.row.add(item);
+            });
+            datatableApi.draw();
             successNoty('Filtered');
+        }
+    });
+}
+
+function toggle(checkbox) {
+    var id = $(checkbox).parent().parent().attr("id");
+    var enabled = checkbox.checked;
+    $.ajax({
+        url: ajaxUrl + id + '/' + enabled,
+        type: 'POST',
+        success: function () {
+            updateTable();
+            successNoty('User status changed');
         }
     });
 }

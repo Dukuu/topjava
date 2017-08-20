@@ -50,4 +50,9 @@ public abstract class AbstractUserController {
         log.info("getByEmail {}", email);
         return service.getByEmail(email);
     }
+
+    public void toggleUser(boolean enabled, int id) {
+        log.info("User enabled - {}", enabled);
+        service.toggleUser(enabled, id);
+    }
 }

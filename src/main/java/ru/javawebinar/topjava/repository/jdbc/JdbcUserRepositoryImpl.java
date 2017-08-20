@@ -92,6 +92,11 @@ public class JdbcUserRepositoryImpl implements UserRepository {
         return users;
     }
 
+    @Override
+    public boolean toggleUser(boolean enabled, int id) {
+        return false; //temp
+    }
+
     private void insertRoles(User u) {
         Set<Role> roles = u.getRoles();
         if (!CollectionUtils.isEmpty(roles)) {
