@@ -1,5 +1,6 @@
 var ajaxUrl = "ajax/profile/meals/";
 var datatableApi;
+var dateTime;
 
 function updateTable() {
     $.ajax({
@@ -64,5 +65,9 @@ $(function () {
             }
         },
         "initComplete": makeEditable
+    });
+    $('#dateTime').datetimepicker({
+        format: 'Y-m-d\\TH:i',
+        lang: 'ru'
     });
 });
