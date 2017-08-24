@@ -13,6 +13,7 @@ public class UserTestData {
     public static final int ADMIN_ID = START_SEQ + 1;
 
     public static final User USER = new User(USER_ID, "User", "user@yandex.ru", "password", Role.ROLE_USER);
+    public static final User USER1 = new User(USER_ID + 10, "User1", "user1@yandex.ru", "password1", Role.ROLE_USER);
     public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", Role.ROLE_ADMIN, Role.ROLE_USER);
 
     public static final ModelMatcher<User> MATCHER = ModelMatcher.of(User.class,

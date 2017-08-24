@@ -1,19 +1,31 @@
 package ru.javawebinar.topjava.to;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class MealWithExceed {
-    private final Integer id;
+public class MealWithExceed implements Serializable {
 
-    private final LocalDateTime dateTime;
+    private Integer id;
 
-    private final String description;
+    @NotNull
+    private LocalDateTime dateTime;
 
-    private final int calories;
+    @NotBlank
+    private String description;
 
-    private final boolean exceed;
+    @Range(min = 10, max = 5000)
+    @NotNull
+    private int calories;
+
+    private boolean exceed;
+
+    public MealWithExceed() {
+    }
 
     public MealWithExceed(@JsonProperty("id") Integer id,
                           @JsonProperty("dateTime") LocalDateTime dateTime,
@@ -24,6 +36,26 @@ public class MealWithExceed {
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
+        this.exceed = exceed;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
+    }
+
+    public void setExceed(boolean exceed) {
         this.exceed = exceed;
     }
 
