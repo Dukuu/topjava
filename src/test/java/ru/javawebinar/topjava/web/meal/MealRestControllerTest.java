@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjava.MealTestData.*;
+import static ru.javawebinar.topjava.TestUtil.userHttpBasic;
 import static ru.javawebinar.topjava.UserTestData.USER;
 import static ru.javawebinar.topjava.model.BaseEntity.START_SEQ;
 
@@ -68,6 +69,15 @@ public class MealRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk());
 
         assertEquals(updated, service.get(MEAL1_ID, START_SEQ));
+    }
+
+    @Test
+    public void testUpdateNotValid() throws Exception {
+        Meal updated = getUpdatedNotValid();
+
+        mockMvc.perform(put(REST_URL + MEAL1_ID).contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(updated)))
+                .andExpect(status().is4xxClientError());
     }
 
     @Test

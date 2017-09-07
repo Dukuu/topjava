@@ -28,6 +28,7 @@
                     </list>
                 </property>
             </bean>
+            <bean class="ru.javawebinar.topjava.util.converter.UserToHttpMessageConverter"/>
         </mvc:message-converters>
     </mvc:annotation-driven>
 

@@ -47,6 +47,12 @@ function updateTableByData(data) {
 }
 
 function save() {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+        xhr.setRequestHeader(header, token);
+    });
+
     $.ajax({
         type: "POST",
         url: ajaxUrl,
@@ -81,8 +87,10 @@ function successNoty(key) {
 function failNoty(jqXHR) {
     closeNoty();
     var errorInfo = $.parseJSON(jqXHR.responseText);
+    var cause = errorInfo.cause;
+    var detail = errorInfo.detail;
     failedNote = noty({
-        text: i18n['common.errorStatus'] + ': ' + jqXHR.status + '<br>'+ errorInfo.cause + '<br>' + errorInfo.detail,
+        text: i18n['common.errorStatus'] + ': ' + jqXHR.status + '<br>' + ((cause==null)?errorInfo:(cause) + '<br>') + ((detail==null)?'':detail),
         type: 'error',
         layout: 'bottomRight'
     });

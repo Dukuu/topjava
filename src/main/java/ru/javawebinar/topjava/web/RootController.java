@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -55,12 +56,15 @@ public class RootController extends AbstractUserController {
     public String updateProfile(@Valid UserTo userTo, BindingResult result, SessionStatus status) {
         if (result.hasErrors()) {
             return "profile";
-        } else {
+        } else try {
             super.update(userTo, AuthorizedUser.id());
             AuthorizedUser.get().update(userTo);
             status.setComplete();
             return "redirect:meals";
+        } catch (DataIntegrityViolationException e) {
+            result.rejectValue("email", "validation.email");
         }
+        return "profile";
     }
 
     @GetMapping("/register")
@@ -75,10 +79,14 @@ public class RootController extends AbstractUserController {
         if (result.hasErrors()) {
             model.addAttribute("register", true);
             return "profile";
-        } else {
+        } else try {
             super.create(UserUtil.createNewFromTo(userTo));
             status.setComplete();
             return "redirect:login?message=app.registered&username=" + userTo.getEmail();
+        } catch (DataIntegrityViolationException e) {
+            result.rejectValue("email", "validation.email");
         }
+        model.addAttribute("register", true);
+        return "profile";
     }
 }
